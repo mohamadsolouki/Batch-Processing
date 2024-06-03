@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'app/static/uploads'
 
 # Load the trained model
-model = tf.keras.models.load_model('model/fashion_model.h5')
+model = tf.keras.models.load_model('model/model.keras')
 
 # Define the class labels (make sure these match your training data)
 class_names = ['Apparel', 'Accessories', 'Footwear', 'Personal Care', 'Free Items', 'Sporting Goods']
