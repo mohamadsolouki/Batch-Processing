@@ -25,13 +25,13 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build Docker image
-        run: docker build -t your-dockerhub-username/fashion-classifier .
+        run: docker build -t mohamadolouki/fashion-classifier .
 
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker image to Docker Hub
-        run: docker push your-dockerhub-username/fashion-classifier
+        run: docker push mohamadolouki/fashion-classifier
 
       - name: SSH into VPS and update
         uses: appleboy/ssh-action@master
@@ -42,5 +42,5 @@ jobs:
           script: |
             sudo docker stop fashion-classifier || true
             sudo docker rm fashion-classifier || true
-            sudo docker pull your-dockerhub-username/fashion-classifier
-            sudo docker run -d -p 5000:5000 --name fashion-classifier your-dockerhub-username/fashion-classifier
+            sudo docker pull mohamadolouki/fashion-classifier
+            sudo docker run -d -p 5000:5000 --name fashion-classifier mohamadolouki/fashion-classifier
