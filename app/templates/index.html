@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Item Classifier</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #image-preview {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fashion Item Classifier</h1>
+
+    <input type="file" id="imageUpload" multiple accept="image/*">
+    <button id="uploadButton">Upload Images</button>
+
+    <div id="results">
+        <h2>Predictions:</h2>
+        <ul id="predictionList">
+            </ul>
+    </div>
+
+    <script>
+        const uploadButton = document.getElementById('uploadButton');
+        const imageUpload = document.getElementById('imageUpload');
+        const predictionList = document.getElementById('predictionList');
+
+        uploadButton.addEventListener('click', () => {
+            const files = imageUpload.files;
+            if (files.length === 0) return;
+
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files[]', files[i]);
+            }
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                predictionList.innerHTML = ''; // Clear previous results
+                data.forEach(prediction => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <strong>${prediction.filename}:</strong> ${prediction.class} 
+                        (Probability: ${prediction.probability.toFixed(2)})
+                    `;
+                    predictionList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
