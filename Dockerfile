@@ -1,12 +1,11 @@
-FROM python:3.8-slim
+FROM python:3.8
 
 WORKDIR /app
 
-COPY requirements.txt /app/
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY . /app/
+COPY app/ ./app
+COPY model/ ./model
 
-EXPOSE 5000
-
-CMD ["python", "app.py"]
+CMD ["python", "app/main.py"]
