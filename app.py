@@ -1,4 +1,3 @@
-# app.py
 import os
 import tensorflow as tf
 from flask import Flask, request, render_template, jsonify
@@ -12,7 +11,7 @@ app.config['UPLOAD_FOLDER'] = 'app/static/uploads'
 # Load the trained model
 model = tf.keras.models.load_model('model/fashion_model.h5')
 
-# Define the class labels
+# Define the class labels (make sure these match your training data)
 class_names = ['Apparel', 'Accessories', 'Footwear', 'Personal Care', 'Free Items', 'Sporting Goods']
 
 # Define a function to preprocess the image
@@ -24,13 +23,8 @@ def preprocess_image(img):
     return img
 
 # Define a route for the home page
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
-
-# Define a route for the prediction API
-@app.route('/predict', methods=['POST'])
-def predict():
     if request.method == 'POST':
         # Check if the post request has the file part
         if 'files[]' not in request.files:
@@ -57,6 +51,8 @@ def predict():
             predictions.append({'filename': file.filename, 'class': class_label, 'probability': float(probability)})
 
         return jsonify(predictions)
+    return render_template('index.html')
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
