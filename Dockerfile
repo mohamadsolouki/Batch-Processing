@@ -1,11 +1,20 @@
+# Dockerfile
 FROM python:3.8
 
+# Set working directory
 WORKDIR /app
 
+# Copy the requirements file
 COPY requirements.txt .
-RUN pip install -r requirements.txt
 
-COPY app/ ./app
-COPY model/ ./model
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "app/main.py"]
+# Copy the application code
+COPY . .
+
+# Expose the port
+EXPOSE 5000
+
+# Run the application
+CMD ["flask", "run", "--host=0.0.0.0"]
