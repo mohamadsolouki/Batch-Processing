@@ -1,4 +1,3 @@
-```markdown
 # Fashion Item Image Classifier
 
 This application classifies images of fashion items into categories like Apparel, Accessories, Footwear, etc., using a trained deep learning model. It's built with Flask, TensorFlow, and Docker for easy deployment.
@@ -12,7 +11,6 @@ This application classifies images of fashion items into categories like Apparel
 
 ## Project Structure
 
-```
 ├── app
 │   ├── static
 │   │   └── uploads
@@ -28,7 +26,6 @@ This application classifies images of fashion items into categories like Apparel
 │       └── main.yml
 └── README.md
 
-```
 
 ## Installation
 
@@ -82,4 +79,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-```
