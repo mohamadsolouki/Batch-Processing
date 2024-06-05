@@ -13,6 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code
 COPY . .
 
+# Make sure the 'uploads' folder exists
+RUN mkdir -p /app/app/static/uploads
+
 # Expose the port
 EXPOSE 5000
 
