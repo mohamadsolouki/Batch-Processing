@@ -14,7 +14,7 @@ model = tf.keras.models.load_model('model/model.keras')
 
 # Define the class labels (make sure these match your training data)
 class_names = ['Topwear', 'Shoes', 'Bags', 'Bottomwear', 'Watches', 'Innerwear', 'Jewellery', 'Eyewear', 'Fragrance', 'Sandal', 'Wallets',
-               'Flip Flops', 'Belts', 'Socks', 'Lips', 'Dress', 'Loungewear and Nightwear']
+               'Flip Flops', 'Belts']
 
 # Database setup
 def get_db():
