@@ -2,7 +2,6 @@ import os
 import tensorflow as tf
 from flask import Flask, request, render_template, jsonify, g
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.xception import preprocess_input
 import numpy as np
 import sqlite3
 
@@ -17,7 +16,7 @@ model = tf.keras.models.load_model('model/model.keras')
 class_names = ['Topwear', 'Shoes', 'Bags', 'Bottomwear', 'Watches', 'Innerwear', 'Jewellery', 'Eyewear', 'Fragrance', 'Sandal', 'Wallets',
                 'Flip Flops', 'Belts', 'Socks', 'Lips', 'Dress', 'Loungewear and Nightwear', 'Saree', 'Nails', 'Makeup', 'Headwear', 'Ties',
                   'Accessories', 'Scarves', 'Cufflinks', 'Apparel Set', 'Free Gifts', 'Stoles', 'Skin Care', 'Skin', 'Eyes', 'Mufflers',
-                    'Shoe Accessories', 'Sports Equipment', 'Gloves', 'Hair', 'Bath and Body']
+                    'Shoe Accessories', 'Sports Equipment', 'Gloves', 'Hair', 'Bath and Body','Water Bottle', 'Perfumes', 'Umbrellas']
 
 # Database setup
 def get_db():
@@ -52,10 +51,10 @@ with app.app_context():
 
 # Define a function to preprocess the image
 def preprocess_image(img):
-    img = img.resize((120, 160))
+    img = img.resize((60, 80))  # Resize to match your model input
     img = image.img_to_array(img)
-    img = np.expand_dims(img, axis=0)
-    img = preprocess_input(img)
+    img = img / 255.0  # Rescale pixel values
+    img = np.expand_dims(img, axis=0) 
     return img
 
 # Define a route for the home page
@@ -80,7 +79,7 @@ def predict():
             file.save(file_path)
 
             # Load and preprocess the image
-            img = image.load_img(file_path, target_size=(120, 160))
+            img = image.load_img(file_path, target_size=(60, 80))  # Match model input
             img = preprocess_image(img)
 
             # Make the prediction
