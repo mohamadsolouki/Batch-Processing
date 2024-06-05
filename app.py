@@ -13,8 +13,8 @@ app.config['DATABASE'] = 'app/database.db'  # Define the database path
 model = tf.keras.models.load_model('model/model.keras')
 
 # Define the class labels (make sure these match your training data)
-class_names = ['Topwear', 'Shoes', 'Bags', 'Bottomwear', 'Watches', 'Innerwear', 'Jewellery', 'Eyewear', 'Fragrance', 'Sandal', 'Wallets',
-               'Flip Flops', 'Belts']
+class_names = ['Bags', 'Belts', 'Bottomwear', 'Eyewear', 'Flip Flops', 'Fragrance', 'Innerwear',
+              'Jewellery', 'Sandal', 'Shoes', 'Topwear', 'Wallets', 'Watches']
 
 # Database setup
 def get_db():
