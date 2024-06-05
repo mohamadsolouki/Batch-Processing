@@ -1,6 +1,6 @@
 import os
 import tensorflow as tf
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, g
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
@@ -18,14 +18,18 @@ class_names = ['Apparel', 'Accessories', 'Footwear', 'Personal Care', 'Free Item
 
 # Database setup
 def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(app.config['DATABASE'])
-    return db
+    if 'db' not in g:
+        g.db = sqlite3.connect(
+            app.config['DATABASE'],
+            detect_types=sqlite3.PARSE_DECLTYPES
+        )
+        g.db.row_factory = sqlite3.Row
 
-@app.teardown_appcontext
+    return g.db
+
+
 def close_connection(exception):
-    db = getattr(g, '_database', None)
+    db = g.pop('db', None)
     if db is not None:
         db.close()
 
