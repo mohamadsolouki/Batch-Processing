@@ -23,7 +23,6 @@
         <div class="mb-3">
             <input type="file" id="imageUpload" multiple accept="image/*" class="form-control">
             <button id="uploadButton" class="btn btn-primary mt-2">Upload Images</button>
-            <button id="viewResultsButton" class="btn btn-secondary mt-2">View All Results</button>
         </div>
 
         <div id="imageContainer" class="row gy-3"></div>
@@ -32,14 +31,30 @@
             <h2 class="mb-3">Predictions:</h2>
             <ul id="predictionList" class="list-group"></ul>
         </div>
+
+        <div id="databaseRecords" class="mt-4">
+            <h2 class="mb-3">Previous Predictions:</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Class</th>
+                        <th>Probability</th>
+                    </tr>
+                </thead>
+                <tbody id="databaseRecordsBody"></tbody>
+            </table>
+            <button id="showDatabaseRecords" class="btn btn-primary">Show Previous Predictions</button>
+        </div>
     </div>
 
     <script>
         const uploadButton = document.getElementById('uploadButton');
-        const viewResultsButton = document.getElementById('viewResultsButton');
         const imageUpload = document.getElementById('imageUpload');
         const predictionList = document.getElementById('predictionList');
         const imageContainer = document.getElementById('imageContainer');
+        const databaseRecordsBody = document.getElementById('databaseRecordsBody');
+        const showDatabaseRecords = document.getElementById('showDatabaseRecords');
 
         uploadButton.addEventListener('click', () => {
             const files = imageUpload.files;
@@ -58,34 +73,14 @@
             .then(response => response.json())
             .then(data => {
                 predictionList.innerHTML = ''; // Clear previous results
-                data.forEach(item => {
-                    item.results.forEach(result => {
-                        const listItem = document.createElement('li');
-                        listItem.className = 'list-group-item';
-                        listItem.innerHTML = `
-                            <strong>${item.filename}:</strong> ${result.class_label}
-                            (Probability: ${result.probability.toFixed(2)})
-                        `;
-                        predictionList.appendChild(listItem);
-                    });
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-
-        viewResultsButton.addEventListener('click', () => {
-            fetch('/results')
-            .then(response => response.json())
-            .then(data => {
-                predictionList.innerHTML = ''; // Clear current predictions view
-                data.forEach(row => {
+                data.forEach(prediction => {
                     const listItem = document.createElement('li');
                     listItem.className = 'list-group-item';
+                    const predictionText = prediction.predictions
+                        .map(([class_name, probability]) => `${class_name}: ${probability.toFixed(2)}`)
+                        .join('<br>');
                     listItem.innerHTML = `
-                        <strong>${row.filename}:</strong> ${row.class}
-                        (Probability: ${row.probability.toFixed(2)})
+                        <strong>${prediction.filename}:</strong><br>${predictionText}
                     `;
                     predictionList.appendChild(listItem);
                 });
@@ -93,6 +88,26 @@
             .catch(error => {
                 console.error('Error:', error);
             });
+        });
+
+        showDatabaseRecords.addEventListener('click', () => {
+            fetch('/results')
+                .then(response => response.json())
+                .then(data => {
+                    databaseRecordsBody.innerHTML = ''; // Clear previous records
+                    data.forEach(record => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${record.filename}</td>
+                            <td>${record.class}</td>
+                            <td>${record.probability}</td>
+                        `;
+                        databaseRecordsBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
 
         function displayImagePreview(file) {
