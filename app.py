@@ -14,7 +14,10 @@ app.config['DATABASE'] = 'app/database.db'  # Define the database path
 model = tf.keras.models.load_model('model/model.keras')
 
 # Define the class labels (make sure these match your training data)
-class_names = ['Apparel', 'Accessories', 'Footwear', 'Personal Care', 'Free Items', 'Sporting Goods']
+class_names = ['Topwear', 'Shoes', 'Bags', 'Bottomwear', 'Watches', 'Innerwear', 'Jewellery', 'Eyewear', 'Fragrance', 'Sandal', 'Wallets',
+                'Flip Flops', 'Belts', 'Socks', 'Lips', 'Dress', 'Loungewear and Nightwear', 'Saree', 'Nails', 'Makeup', 'Headwear', 'Ties',
+                  'Accessories', 'Scarves', 'Cufflinks', 'Apparel Set', 'Free Gifts', 'Stoles', 'Skin Care', 'Skin', 'Eyes', 'Mufflers',
+                    'Shoe Accessories', 'Sports Equipment', 'Gloves', 'Hair', 'Bath and Body']
 
 # Database setup
 def get_db():
@@ -49,7 +52,7 @@ with app.app_context():
 
 # Define a function to preprocess the image
 def preprocess_image(img):
-    img = img.resize((160, 160))
+    img = img.resize((120, 160))
     img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
     img = preprocess_input(img)
@@ -77,7 +80,7 @@ def predict():
             file.save(file_path)
 
             # Load and preprocess the image
-            img = image.load_img(file_path, target_size=(160, 160))
+            img = image.load_img(file_path, target_size=(120, 160))
             img = preprocess_image(img)
 
             # Make the prediction
