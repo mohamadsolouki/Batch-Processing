@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 from flask import Flask, request, render_template, jsonify, g
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+from tensorflow.keras.applications.xception import preprocess_input
 import numpy as np
 import sqlite3
 
