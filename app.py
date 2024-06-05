@@ -13,8 +13,8 @@ app.config['DATABASE'] = 'app/database.db'  # Define the database path
 model = tf.keras.models.load_model('model/model.keras')
 
 # Define the class labels (make sure these match your training data)
-class_names = ['Topwear', 'Shoes', 'Bags', 'Bottomwear', 'Watches', 'Innerwear', 'Jewellery', 'Eyewear', 'Fragrance', 'Sandal', 'Wallets', 'Flip Flops', 
-               'Belts', 'Socks', 'Lips', 'Dress', 'Loungewear and Nightwear', 'Saree', 'Nails', 'Makeup', 'Headwear', 'Ties', 'Accessories']
+class_names = ['Topwear', 'Shoes', 'Bags', 'Bottomwear', 'Watches', 'Innerwear', 'Jewellery', 'Eyewear', 'Fragrance', 'Sandal', 'Wallets',
+               'Flip Flops', 'Belts', 'Socks', 'Lips', 'Dress', 'Loungewear and Nightwear']
 
 # Database setup
 def get_db():
@@ -111,7 +111,7 @@ def results():
             SELECT filename, class, probability FROM images
         ''')
         results = cursor.fetchall()
-        return jsonify(results)
+        return render_template('results.html', results=results)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

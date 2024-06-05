@@ -31,6 +31,10 @@
             <h2 class="mb-3">Predictions:</h2>
             <ul id="predictionList" class="list-group"></ul>
         </div>
+
+        <div class="mt-4">
+            <a href="/results" class="btn btn-secondary">View Prediction History</a>
+        </div>
     </div>
 
     <script>
@@ -55,16 +59,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                predictionList.innerHTML = ''; // Clear previous results
-                data.forEach(prediction => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'list-group-item';
-                    listItem.innerHTML = `
-                        <strong>${prediction.filename}:</strong> ${prediction.class}
-                        (Probability: ${prediction.probability.toFixed(2)})
-                    `;
-                    predictionList.appendChild(listItem);
-                });
+                displayPredictions(data);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -77,9 +72,27 @@
                 const imgElement = document.createElement('img');
                 imgElement.src = e.target.result;
                 imgElement.className = 'image-preview col-12 col-md-6 col-lg-4';
-                imageContainer.appendChild(img(objElement));
+                imageContainer.appendChild(imgElement);
             };
             reader.readAsDataURL(file);
+        }
+
+        function displayPredictions(data) {
+            predictionList.innerHTML = ''; // Clear previous results
+            data.forEach(prediction => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                
+                // Display top 5 classes with probabilities
+                const topClasses = prediction.predictions.slice(0, 5);
+                const classProbabilities = topClasses.map(item => `${item.class} (${item.probability.toFixed(2)})`);
+                
+                listItem.innerHTML = `
+                    <strong>${prediction.filename}:</strong><br>
+                    ${classProbabilities.join('<br>')}
+                `;
+                predictionList.appendChild(listItem);
+            });
         }
     </script>
 </body>
