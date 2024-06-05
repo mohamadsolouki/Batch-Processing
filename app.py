@@ -41,8 +41,7 @@ with app.app_context():
         CREATE TABLE IF NOT EXISTS images (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             filename TEXT NOT NULL,
-            class TEXT,
-            probability REAL
+            predictions TEXT
         )
     ''')
     db.commit()
@@ -82,7 +81,7 @@ def predict():
 
             # Make the prediction
             prediction = model.predict(img)
-            top_indices = prediction[0].argsort()[-5:][::-1]
+            top_indices = prediction[0].argsort()[-3:][::-1]
             top_predictions = [(class_names[idx], float(prediction[0][idx])) for idx in top_indices]
 
             # Save the prediction to the database
@@ -90,9 +89,9 @@ def predict():
                 db = get_db()
                 cursor = db.cursor()
                 cursor.execute('''
-                    INSERT INTO images (filename, class, probability)
-                    VALUES (?, ?, ?)
-                ''', (file.filename, ', '.join([c for c, p in top_predictions]), sum([p for c, p in top_predictions])))
+                    INSERT INTO images (filename, predictions)
+                    VALUES (?, ?)
+                ''', (file.filename, ', '.join([f"{c}: {p:.2f}" for c, p in top_predictions])))
                 db.commit()
 
             predictions.append({'filename': file.filename, 'predictions': top_predictions})
@@ -107,7 +106,7 @@ def results():
         db = get_db()
         cursor = db.cursor()
         cursor.execute('''
-            SELECT filename, class, probability FROM images
+            SELECT filename, predictions FROM images
         ''')
         results = [dict(row) for row in cursor.fetchall()]
         return jsonify(results)
