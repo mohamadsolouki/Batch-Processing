@@ -64,6 +64,7 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
+        # Check if the post request has the file part
         if 'files[]' not in request.files:
             return jsonify({'error': 'No file part'}), 400
 
@@ -71,27 +72,30 @@ def predict():
         predictions = []
 
         for file in files:
+            # Save the file to the uploads folder
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
             file.save(file_path)
 
-            img = image.load_img(file_path, target_size=(80, 60))
+            # Load and preprocess the image
+            img = image.load_img(file_path, target_size=(80, 60))  # Match model input
             img = preprocess_image(img)
 
+            # Make the prediction
             prediction = model.predict(img)
-            top_indices = np.argsort(prediction[0])[::-1][:5]
-            results = [{'class_label': class_names[i], 'probability': prediction[0][i]} for i in top_indices]
+            top_indices = prediction[0].argsort()[-5:][::-1]
+            top_predictions = [(class_names[idx], float(prediction[0][idx])) for idx in top_indices]
 
+            # Save the prediction to the database
             with app.app_context():
                 db = get_db()
                 cursor = db.cursor()
-                for result in results:
-                    cursor.execute('''
-                        INSERT INTO images (filename, class, probability)
-                        VALUES (?, ?, ?)
-                    ''', (file.filename, result['class_label'], result['probability']))
+                cursor.execute('''
+                    INSERT INTO images (filename, class, probability)
+                    VALUES (?, ?, ?)
+                ''', (file.filename, ', '.join([c for c, p in top_predictions]), sum([p for c, p in top_predictions])))
                 db.commit()
 
-            predictions.append({'filename': file.filename, 'results': results})
+            predictions.append({'filename': file.filename, 'predictions': top_predictions})
 
         return jsonify(predictions)
     return render_template('index.html')
@@ -105,7 +109,7 @@ def results():
         cursor.execute('''
             SELECT filename, class, probability FROM images
         ''')
-        results = cursor.fetchall()
+        results = [dict(row) for row in cursor.fetchall()]
         return jsonify(results)
 
 if __name__ == '__main__':
