@@ -9,7 +9,6 @@
         .image-preview {
             width: 100%;
             height: auto;
-            border: 1px solid #ccc;
             margin-bottom: 10px;
         }
         .result-item {
@@ -32,11 +31,6 @@
             <h2 class="mb-3">Predictions:</h2>
             <ul id="predictionList" class="list-group"></ul>
         </div>
-
-        <div id="history" class="mt-4">
-            <h2 class="mb-3">Prediction History:</h2>
-            <ul id="historyList" class="list-group"></ul>
-        </div>
     </div>
 
     <script>
@@ -44,7 +38,6 @@
         const imageUpload = document.getElementById('imageUpload');
         const predictionList = document.getElementById('predictionList');
         const imageContainer = document.getElementById('imageContainer');
-        const historyList = document.getElementById('historyList');
 
         uploadButton.addEventListener('click', () => {
             const files = imageUpload.files;
@@ -84,33 +77,10 @@
                 const imgElement = document.createElement('img');
                 imgElement.src = e.target.result;
                 imgElement.className = 'image-preview col-12 col-md-6 col-lg-4';
-                imageContainer.appendChild(imgElement);
+                imageContainer.appendChild(img(objElement));
             };
             reader.readAsDataURL(file);
         }
-
-        function fetchHistory() {
-            fetch('/results')
-            .then(response => response.json())
-            .then(data => {
-                historyList.innerHTML = ''; // Clear previous history
-                data.forEach(item => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'list-group-item';
-                    listItem.innerHTML = `
-                        <strong>${item.filename}:</strong> ${item.class}
-                        (Probability: ${item.probability.toFixed(2)})
-                    `;
-                    historyList.appendChild(listItem);
-                });
-            })
-            .catch(error => {
-console.error('Error fetching history:', error);
-});
-        }
-
-        // On page load, fetch prediction history
-        document.addEventListener('DOMContentLoaded', fetchHistory);
     </script>
 </body>
 </html>
