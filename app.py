@@ -1,7 +1,7 @@
 import os
 import tensorflow as tf
 from flask import Flask, request, render_template, jsonify, g
-from tensorflow.keras.preprocessing import image
+from tensorflow.keras.preprocessing import image # type: ignore
 import numpy as np
 import sqlite3
 
