@@ -9,6 +9,7 @@ cursor.execute('''
         filename TEXT NOT NULL,
         class TEXT,
         probability REAL
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
 ''')
 
