@@ -31,7 +31,6 @@ def get_db():
 
     return g.db
 
-
 def close_connection(exception):
     db = g.pop('db', None)
     if db is not None:
