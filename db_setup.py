@@ -7,7 +7,6 @@ cursor.execute('''
     CREATE TABLE IF NOT EXISTS images (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         filename TEXT NOT NULL,
-        class TEXT,
         predictions TEXT,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )
