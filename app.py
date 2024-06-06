@@ -4,6 +4,7 @@ from flask import Flask, request, render_template, jsonify, g
 from tensorflow.keras.preprocessing import image # type: ignore
 import numpy as np
 import sqlite3
+from datetime import datetime
 
 # Create app/static/uploads folder if it doesn't exist
 if not os.path.exists('app/static/uploads'):
@@ -44,7 +45,7 @@ with app.app_context():
         CREATE TABLE IF NOT EXISTS images (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             filename TEXT NOT NULL,
-            predictions TEXT
+            predictions TEXT,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
