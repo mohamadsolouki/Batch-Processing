@@ -8,8 +8,8 @@ cursor.execute('''
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         filename TEXT NOT NULL,
         class TEXT,
-        probability REAL,
-        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        predictions TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )
 ''')
 

@@ -45,7 +45,7 @@ with app.app_context():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             filename TEXT NOT NULL,
             predictions TEXT
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     db.commit()
@@ -93,8 +93,8 @@ def predict():
                 db = get_db()
                 cursor = db.cursor()
                 cursor.execute('''
-                    INSERT INTO images (filename, predictions, timestamp)
-                    VALUES (?, ?, CURRENT_TIMESTAMP)
+                    INSERT INTO images (filename, predictions)
+                    VALUES (?, ?)
                 ''', (file.filename, ', '.join([f"{c}: {p:.2f}" for c, p in top_predictions])))
                 db.commit()
 
