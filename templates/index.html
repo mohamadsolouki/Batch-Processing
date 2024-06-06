@@ -28,6 +28,7 @@
                     <tr>
                         <th>Filename</th>
                         <th>Predicted Classes</th>
+                        <th>Timestamp</th>
                     </tr>
                 </thead>
                 <tbody id="databaseRecordsBody"></tbody>
@@ -85,7 +86,7 @@
                         row.innerHTML = `
                             <td>${record.filename}</td>
                             <td>${record.predictions}</td>
-                            <td>${record.created_at}</td>
+                            <td>${new Date(record.timestamp).toLocaleString()}</td>
                         `;
                         databaseRecordsBody.appendChild(row);
                     });
