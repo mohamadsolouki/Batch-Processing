@@ -5,6 +5,10 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 import sqlite3
 
+# Create app/static/uploads folder if it doesn't exist
+if not os.path.exists('app/static/uploads'):
+    os.makedirs('app/static/uploads')
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'app/static/uploads'
 app.config['DATABASE'] = 'app/database.db'  # Define the database path
