@@ -48,7 +48,7 @@ with app.app_context():
 
 # Define a function to preprocess the image
 def preprocess_image(img):
-    img = img.resize((80, 60))  # Resize to match your model input
+    img = img.resize((160, 120))  # Resize to match your model input
     img = image.img_to_array(img)
     img = img / 255.0  # Rescale pixel values
     img = np.expand_dims(img, axis=0) 
@@ -76,7 +76,7 @@ def predict():
             file.save(file_path)
 
             # Load and preprocess the image
-            img = image.load_img(file_path, target_size=(80, 60))  # Match model input
+            img = image.load_img(file_path, target_size=(160, 120))  # Match model input
             img = preprocess_image(img)
 
             # Make the prediction
