@@ -22,6 +22,9 @@ The project has the following structure:
 ├── app
 │   └── static
 │       └── uploads
+├── data
+│   └── styles.csv
+│   └── images
 │── templates
 │   └── index.html
 ├── model
@@ -36,6 +39,8 @@ The project has the following structure:
 
 - `.github/workflows/main.yml`: GitHub Actions workflow for automated deployment to the VPS.
 - `app/static/uploads`: Directory for storing uploaded images.
+- `data/styles.csv`: Dataset containing fashion item categories and corresponding image URLs.
+- `data/images`: Directory for storing images downloaded from the dataset.
 - `templates/index.html`: HTML template for the web interface.
 - `model/model.keras`: Trained Keras model file for fashion item classification.
 - `test-images`: Directory containing sample images for testing.
