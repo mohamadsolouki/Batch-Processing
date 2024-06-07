@@ -20,12 +20,13 @@ The project has the following structure:
 │   └── workflows
 │       └── main.yml
 ├── app
-│   ├── static
-│   │   └── uploads
-│   └── templates
-│       └── index.html
+│   └── static
+│       └── uploads
+│── templates
+│   └── index.html
 ├── model
 │   └── model.keras
+├── test-images
 ├── app.py
 ├── batch_processing.py
 ├── db_setup.py
@@ -35,8 +36,9 @@ The project has the following structure:
 
 - `.github/workflows/main.yml`: GitHub Actions workflow for automated deployment to the VPS.
 - `app/static/uploads`: Directory for storing uploaded images.
-- `app/templates/index.html`: HTML template for the web interface.
+- `templates/index.html`: HTML template for the web interface.
 - `model/model.keras`: Trained Keras model file for fashion item classification.
+- `test-images`: Directory containing sample images for testing.
 - `app.py`: Flask application code for the API and web interface.
 - `batch_processing.py`: Script for testing batch processing functionality.
 - `db_setup.py`: Script for setting up the SQLite database.
@@ -47,7 +49,7 @@ The project has the following structure:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/fashion-item-classifier.git
+   git clone https://github.com/mohamadsolouki/Batch-Processing.git
    ```
 
 2. Install the required dependencies:
@@ -112,7 +114,7 @@ To test the batch processing functionality, you can run the `batch_processing.py
 python batch_processing.py
 ```
 
-This script sends a batch of images to the API for classification and prints the results.
+This script sends a batch of images in test-images directory to the API for classification and prints the results.
 
 ## Deployment
 
